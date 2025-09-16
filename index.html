@@ -22,6 +22,37 @@
         <li>Ventas al por mayor y menor</li>
       </ul>
     </section>
+
+    <section class="categorias-stock">
+      <h2>📦 Categorías de repuestos</h2>
+      <input type="text" id="busqueda" placeholder="Buscar categoría..." onkeyup="filtrarCategorias()">
+
+      <div class="grid-categorias" id="lista-categorias">
+        <div class="categoria">Overhaul</div>
+        <div class="categoria">Discos de fricción</div>
+        <div class="categoria">Bandas</div>
+        <div class="categoria">Filtros</div>
+        <div class="categoria">Pistones</div>
+        <div class="categoria">Retenedores</div>
+        <div class="categoria">Bushing</div>
+        <div class="categoria">Empaques</div>
+        <div class="categoria">Discos sueltos</div>
+        <div class="categoria">Metales</div>
+      </div>
+    </section>
+
+    <script>
+      function filtrarCategorias() {
+        const input = document.getElementById('busqueda');
+        const filtro = input.value.toLowerCase();
+        const categorias = document.querySelectorAll('#lista-categorias .categoria');
+
+        categorias.forEach(cat => {
+          const texto = cat.textContent.toLowerCase();
+          cat.style.display = texto.includes(filtro) ? 'block' : 'none';
+        });
+      }
+    </script>
   </main>
 
   <footer>
