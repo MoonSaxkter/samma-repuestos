@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Samma Transmissions Parts</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+      color: #fff;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Header con efecto glassmorphism */
+    header {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+      padding: 40px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .logo-container {
+      position: relative;
+      z-index: 2;
+    }
+
+    header img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      margin-bottom: 20px;
+      animation: logoFloat 3s ease-in-out infinite;
+      object-fit: cover;
+      background: linear-gradient(45deg, #8e2de2, #ff0080);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #8e2de2, #ff0080, #e100ff);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 4s ease-in-out infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    header p {
+      font-size: 1.3rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 300;
+    }
+
+    /* Contenido principal */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section {
+      margin: 60px 0;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, #8e2de2, #ff0080);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 600;
+    }
+
+    /* Sección de servicios */
+    .servicios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .servicio {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px 30px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .servicio::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #8e2de2, #ff0080, #7f00ff);
+    }
+
+    .servicio:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .servicio-icono {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .servicio h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      color: #ff0080;
+    }
+
+    .servicio p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1rem;
+    }
+
+    /* Sección de categorías */
+    .categorias-stock {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 30px;
+      padding: 60px 30px;
+      margin: 80px 0;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Búsqueda inteligente */
+    .busqueda-inteligente {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 25px;
+      padding: 40px;
+      margin-bottom: 50px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #busqueda-general {
+      width: 100%;
+      max-width: 600px;
+      padding: 20px 25px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 25px;
+      transition: all 0.3s ease;
+    }
+
+    #busqueda-general::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    #busqueda-general:focus {
+      outline: none;
+      border-color: #ff0080;
+      box-shadow: 0 0 25px rgba(255, 0, 128, 0.4);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .filtros-rapidos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .filtros-rapidos select,
+    .filtros-rapidos input {
+      padding: 18px 28px;
+      border: none;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      min-height: 58px;
+      appearance: none; /* Quita el estilo predeterminado del select */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.7)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 18px center;
+      background-size: 16px;
+      padding-right: 50px; /* Espacio para la flecha */
+    }
+
+    /* Estilos específicos para input (campo año) */
+    .filtros-rapidos input {
+      background-image: none; /* Sin flecha para inputs */
+      padding-right: 28px; /* Padding normal */
+    }
+
+    /* Placeholder del input año */
+    .filtros-rapidos input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 400;
+    }
+
+    .filtros-rapidos select:focus,
+    .filtros-rapidos input:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: #ff0080;
+      box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .filtros-rapidos select:hover,
+    .filtros-rapidos input:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Estilos para las opciones del select */
+    .filtros-rapidos option {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 12px;
+      border: none;
+    }
+
+    .filtros-rapidos option:hover,
+    .filtros-rapidos option:checked {
+      background: linear-gradient(135deg, #8e2de2, #ff0080);
+      color: #fff;
+    }
+
+    .filtros-rapidos option {
+      background: #1a1a2e;
+      color: #fff;
+    }
+
+    .resultados-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 15px;
+    }
+
+    #limpiar-filtros {
+      background: linear-gradient(135deg, #8e2de2, #ff0080);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      color: white;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #limpiar-filtros:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(255, 0, 128, 0.4);
+    }
+
+    /* Resultados detallados */
+    .resultados-detallados {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+      padding: 30px;
+      margin-top: 40px;
+      backdrop-filter: blur(10px);
+    }
+
+    .resultados-detallados h3 {
+      color: #ff0080;
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+    }
+
+    .lista-repuestos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .repuesto-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .repuesto-item:hover {
+      background: rgba(255, 0, 128, 0.1);
+      border-color: #ff0080;
+      transform: translateY(-3px);
+    }
+
+    .repuesto-codigo {
+      font-weight: bold;
+      color: #ff0080;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    .repuesto-descripcion {
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 5px;
+    }
+
+    .repuesto-aplicacion {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+    }
+
+    .grid-categorias {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .categoria {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.4s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .categoria::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 0, 128, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .categoria:hover::before {
+      left: 100%;
+    }
+
+    .categoria:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+      border-color: #ff0080;
+      background: rgba(255, 0, 128, 0.15);
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(0, 0, 0, 0.3);
+      text-align: center;
+      padding: 40px 20px;
+      margin-top: 80px;
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    footer p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.95rem;
+    }
+
+    /* Efectos de partículas de fondo */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(255, 0, 128, 0.7);
+      border-radius: 50%;
+      animation: float 8s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 0.5;
+      }
+    }
+
+    /* Responsivo para filtros mejorado */
+    @media (min-width: 1400px) {
+      .filtros-rapidos {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        max-width: 1100px;
+      }
+      
+      .filtros-rapidos select,
+      .filtros-rapidos input {
+        padding: 20px 30px;
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (min-width: 1200px) and (max-width: 1399px) {
+      .filtros-rapidos {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+      }
+    }
+
+    @media (min-width: 900px) and (max-width: 1199px) {
+      .filtros-rapidos {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .busqueda-inteligente {
+        padding: 25px 20px;
+        margin-bottom: 40px;
+      }
+      
+      .filtros-rapidos {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        max-width: 100%;
+      }
+      
+      .filtros-rapidos select,
+      .filtros-rapidos input {
+        padding: 16px 22px;
+        font-size: 1rem;
+        min-height: 54px;
+      }
+      
+      .resultados-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+      }
+    }
+
+    /* Responsivo general */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.2rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      .servicios-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .grid-categorias {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+      }
+
+      .categorias-stock {
+        padding: 40px 20px;
+        margin: 60px 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 30px 15px;
+      }
+
+      header h1 {
+        font-size: 1.8rem;
+      }
+
+      header p {
+        font-size: 1.1rem;
+      }
+
+      .servicio {
+        padding: 30px 20px;
+      }
+
+      #busqueda-general {
+        padding: 15px 20px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Partículas de fondo -->
+  <div class="particles" id="particles"></div>
+
+  <header>
+    <div class="logo-container">
+      <img src="img/samma-logo.PNG" alt="Logo Samma" onerror="this.style.display='none'" />
+      <h1>Samma Transmissions Parts</h1>
+      <p>Repuestos automotrices de calidad premium ⚙️</p>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>🚘 Nuestros Servicios</h2>
+      <div class="servicios-grid">
+        <div class="servicio">
+          <span class="servicio-icono">🔧</span>
+          <h3>Repuestos de Transmisiones</h3>
+          <p>Amplio catálogo de repuestos originales y compatibles para todo tipo de transmisiones automáticas.</p>
+        </div>
+        <div class="servicio">
+          <span class="servicio-icono">🎯</span>
+          <h3>Asesoría Técnica</h3>
+          <p>Contamos con expertos que te guiarán para encontrar el repuesto exacto que necesitas.</p>
+        </div>
+        <div class="servicio">
+          <span class="servicio-icono">📦</span>
+          <h3>Ventas al Mayor y Menor</h3>
+          <p>Precios competitivos tanto para talleres como para usuarios finales. ¡Consulta por descuentos especiales!</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="categorias-stock">
+      <h2>📦 Catálogo de Repuestos</h2>
+      
+      <!-- Búsqueda inteligente -->
+      <div class="busqueda-inteligente">
+        <input type="text" id="busqueda-general" placeholder="🔍 Buscar por código, marca, modelo..." onkeyup="buscarRepuestos()" />
+        
+        <div class="filtros-rapidos">
+          <input type="text" id="filtro-caja" placeholder="📦 Número de caja (ej: 4L60E)" onkeyup="aplicarFiltros()" />
+
+          <select id="filtro-tipo" onchange="aplicarFiltros()">
+            <option value="">⚙️ Todos los repuestos</option>
+            <option value="overhaul">Overhaul</option>
+            <option value="discos">Discos de fricción</option>
+            <option value="bandas">Bandas</option>
+            <option value="filtros">Filtros</option>
+            <option value="pistones">Pistones</option>
+            <option value="retenedores">Retenedores</option>
+            <option value="bushing">Bushing</option>
+            <option value="empaques">Empaques</option>
+            <option value="discos-sueltos">Discos sueltos</option>
+            <option value="metales">Metales</option>
+          </select>
+
+          <input type="number" id="filtro-anio" placeholder="📅 Año" min="1990" max="2025" onchange="aplicarFiltros()" />
+        </div>
+
+        <div class="resultados-info">
+          <span id="contador-resultados"></span>
+          <button id="limpiar-filtros" onclick="limpiarFiltros()">🗑️ Limpiar filtros</button>
+        </div>
+      </div>
+
+      <!-- Categorías (ahora también funcionan como acceso rápido) -->
+      <div class="grid-categorias" id="lista-categorias">
+        <div class="categoria" data-categoria="overhaul" onclick="filtrarRapido('overhaul')">🔩 Overhaul</div>
+        <div class="categoria" data-categoria="discos" onclick="filtrarRapido('discos')">🥏 Discos de Fricción</div>
+        <div class="categoria" data-categoria="bandas" onclick="filtrarRapido('bandas')">🔗 Bandas</div>
+        <div class="categoria" data-categoria="filtros" onclick="filtrarRapido('filtros')">🔍 Filtros</div>
+        <div class="categoria" data-categoria="pistones" onclick="filtrarRapido('pistones')">⚙️ Pistones</div>
+        <div class="categoria" data-categoria="retenedores" onclick="filtrarRapido('retenedores')">🔒 Retenedores</div>
+        <div class="categoria" data-categoria="bushing" onclick="filtrarRapido('bushing')">🔩 Bushing</div>
+        <div class="categoria" data-categoria="empaques" onclick="filtrarRapido('empaques')">📦 Empaques</div>
+        <div class="categoria" data-categoria="discos-sueltos" onclick="filtrarRapido('discos-sueltos')">💿 Discos Sueltos</div>
+        <div class="categoria" data-categoria="metales" onclick="filtrarRapido('metales')">🪙 Metales</div>
+      </div>
+
+      <!-- Sección de resultados detallados (se mostrará cuando busque) -->
+      <div class="resultados-detallados" id="resultados-detallados" style="display: none;">
+        <h3>🎯 Resultados de búsqueda</h3>
+        <div class="lista-repuestos" id="lista-repuestos">
+          <!-- Aquí aparecerán los repuestos específicos -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Samma Transmissions Parts. Todos los derechos reservados. | Calidad y confianza desde siempre</p>
+  </footer>
+
+  <script>
+    // Base de datos simulada de repuestos (aquí tu madre agregaría todos sus repuestos)
+    const repuestosDB = [
+      // Ejemplos de cómo estructurar los repuestos con número de caja
+      { codigo: "EMP-001", descripcion: "Empaque de tapa de válvulas", caja: "4L60E", tipo: "empaques", año: "2015-2020", aplicacion: "Honda Civic, Accord" },
+      { codigo: "EMP-002", descripcion: "Empaque de carter", caja: "CVT", tipo: "empaques", año: "2018-2023", aplicacion: "Toyota Corolla" },
+      { codigo: "FIL-012", descripcion: "Filtro de transmisión CVT", caja: "CVT", tipo: "filtros", año: "2016-2021", aplicacion: "Nissan Sentra, Versa" },
+      { codigo: "DIS-008", descripcion: "Disco de fricción banda A", caja: "4T65E", tipo: "discos", año: "2014-2019", aplicacion: "Ford Focus, Fiesta" },
+      { codigo: "BAN-015", descripcion: "Banda de freno trasera", caja: "6T40", tipo: "bandas", año: "2017-2022", aplicacion: "Chevrolet Cruze" },
+      { codigo: "PST-003", descripcion: "Pistón de servo principal", caja: "A6LF1", tipo: "pistones", año: "2019-2024", aplicacion: "Hyundai Elantra" },
+      // Aquí irían TODOS los repuestos reales...
+    ];
+
+    // Función de búsqueda inteligente
+    function buscarRepuestos() {
+      const termino = document.getElementById('busqueda-general').value.toLowerCase();
+      
+      if (termino.length > 2) {
+        // Mostrar resultados detallados
+        document.getElementById('resultados-detallados').style.display = 'block';
+        document.getElementById('lista-categorias').style.display = 'none';
+        
+        const resultados = repuestosDB.filter(repuesto => 
+          repuesto.codigo.toLowerCase().includes(termino) ||
+          repuesto.descripcion.toLowerCase().includes(termino) ||
+          repuesto.aplicacion.toLowerCase().includes(termino)
+        );
+        
+        mostrarResultados(resultados);
+      } else {
+        // Volver a mostrar categorías
+        document.getElementById('resultados-detallados').style.display = 'none';
+        document.getElementById('lista-categorias').style.display = 'grid';
+        aplicarFiltros();
+      }
+    }
+
+    // Aplicar filtros combinados
+    function aplicarFiltros() {
+      const caja = document.getElementById('filtro-caja').value.toLowerCase();
+      const tipo = document.getElementById('filtro-tipo').value;
+      const anio = document.getElementById('filtro-anio').value;
+      const termino = document.getElementById('busqueda-general').value.toLowerCase();
+
+      let resultados = repuestosDB;
+
+      // Aplicar filtros
+      if (caja) resultados = resultados.filter(r => r.caja.toLowerCase().includes(caja));
+      if (tipo) resultados = resultados.filter(r => r.tipo === tipo);
+      if (anio) resultados = resultados.filter(r => r.año.includes(anio));
+      if (termino.length > 2) {
+        resultados = resultados.filter(r => 
+          r.codigo.toLowerCase().includes(termino) ||
+          r.descripcion.toLowerCase().includes(termino) ||
+          r.aplicacion.toLowerCase().includes(termino) ||
+          r.caja.toLowerCase().includes(termino)
+        );
+      }
+
+      if (caja || tipo || anio || termino.length > 2) {
+        document.getElementById('resultados-detallados').style.display = 'block';
+        document.getElementById('lista-categorias').style.display = 'none';
+        mostrarResultados(resultados);
+      } else {
+        document.getElementById('resultados-detallados').style.display = 'none';
+        document.getElementById('lista-categorias').style.display = 'grid';
+        filtrarCategorias();
+      }
+
+      actualizarContador(resultados.length);
+    }
+
+    // Mostrar resultados en tarjetas
+    function mostrarResultados(resultados) {
+      const container = document.getElementById('lista-repuestos');
+      
+      if (resultados.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.7); grid-column: 1/-1;">😔 No se encontraron repuestos. Intenta con otros términos.</p>';
+        return;
+      }
+
+      container.innerHTML = resultados.map(repuesto => `
+        <div class="repuesto-item" onclick="contactarRepuesto('${repuesto.codigo}')">
+          <div class="repuesto-codigo">${repuesto.codigo}</div>
+          <div class="repuesto-descripcion">${repuesto.descripcion}</div>
+          <div class="repuesto-aplicacion">📦 Caja: ${repuesto.caja} | 🚗 ${repuesto.aplicacion} (${repuesto.año})</div>
+        </div>
+      `).join('');
+    }
+
+    // Filtro rápido por categoría
+    function filtrarRapido(categoria) {
+      document.getElementById('filtro-tipo').value = categoria;
+      aplicarFiltros();
+    }
+
+    // Limpiar todos los filtros
+    function limpiarFiltros() {
+      document.getElementById('busqueda-general').value = '';
+      document.getElementById('filtro-caja').value = '';
+      document.getElementById('filtro-tipo').value = '';
+      document.getElementById('filtro-anio').value = '';
+      
+      document.getElementById('resultados-detallados').style.display = 'none';
+      document.getElementById('lista-categorias').style.display = 'grid';
+      
+      const categorias = document.querySelectorAll('#lista-categorias .categoria');
+      categorias.forEach(cat => cat.style.display = 'block');
+      
+      actualizarContador('todas las categorías');
+    }
+
+    // Actualizar contador de resultados
+    function actualizarContador(cantidad) {
+      const contador = document.getElementById('contador-resultados');
+      contador.textContent = ''; // Mantener siempre vacío
+    }
+
+    // Función para contactar sobre un repuesto específico
+    function contactarRepuesto(codigo) {
+      // Aquí puedes integrar WhatsApp, formulario, etc.
+      alert(`¡Perfecto! Te contactaremos sobre el repuesto ${codigo}. 
+      
+En el futuro aquí podrías:
+📱 Enviar WhatsApp automático
+📧 Abrir formulario de contacto  
+🛒 Agregar al carrito`);
+    }
+
+    // Función original de filtrar categorías (para búsquedas simples)
+    function filtrarCategorias() {
+      const input = document.getElementById('busqueda-general');
+      const filtro = input.value.toLowerCase();
+      const categorias = document.querySelectorAll('#lista-categorias .categoria');
+
+      categorias.forEach(cat => {
+        const texto = cat.textContent.toLowerCase();
+        const dataCategoria = cat.getAttribute('data-categoria').toLowerCase();
+        const coincide = texto.includes(filtro) || dataCategoria.includes(filtro);
+        
+        if (coincide) {
+          cat.style.display = 'block';
+          cat.style.animation = 'fadeIn 0.5s ease-in-out';
+        } else {
+          cat.style.display = 'none';
+        }
+      });
+    }
+
+    // Crear partículas de fondo
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 50;
+
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Posición aleatoria
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        
+        // Delay de animación aleatorio
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        
+        // Duración de animación aleatoria
+        particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Añadir efecto de clic a las categorías
+    function addCategoryClickEffects() {
+      const categorias = document.querySelectorAll('.categoria');
+      
+      categorias.forEach(categoria => {
+        categoria.addEventListener('click', function() {
+          // Efecto de pulso al hacer clic
+          this.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+          }, 150);
+          
+          // Aquí puedes agregar funcionalidad adicional
+          console.log('Categoría seleccionada:', this.textContent);
+        });
+      });
+    }
+
+    // Inicializar efectos al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+      createParticles();
+      addCategoryClickEffects();
+    });
+
+    // Agregar animación de fade in
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
