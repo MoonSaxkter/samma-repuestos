@@ -395,6 +395,25 @@
       font-size: 0.9rem;
     }
 
+    .repuesto-imagen {
+      width: auto;
+      max-width: 180px;
+      height: auto;
+      max-height: 120px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      border: 2px solid rgba(255, 0, 128, 0.3);
+      transition: all 0.3s ease;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .repuesto-imagen:hover {
+      border-color: #ff0080;
+      transform: scale(1.05);
+    }
+
     .grid-categorias {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -607,7 +626,6 @@
       <h2>🚘 Nuestros Servicios</h2>
       <div class="servicios-grid">
         <div class="servicio">
-          <img src="img/overhaul.jpeg" alt="Kit Overhaul" class="servicio-imagen" onerror="this.style.display='none'" />
           <span class="servicio-icono">🔧</span>
           <h3>Repuestos de Transmisiones</h3>
           <p>Amplio catálogo de repuestos originales y compatibles para todo tipo de transmisiones automáticas.</p>
@@ -834,8 +852,19 @@
           colorStock = '#51cf66';
         }
 
+        // Agregar imagen solo para overhaul PRECISION y TRANSNATION
+        let imagenOverhaul = '';
+        if (repuesto.categoria === 'overhaul') {
+          if (repuesto.marca.toUpperCase().includes('PRECISION')) {
+            imagenOverhaul = '<img src="img/overhaul.jpeg" alt="Kit Overhaul Precision" class="repuesto-imagen" onerror="this.style.display=\'none\'" />';
+          } else if (repuesto.marca.toUpperCase().includes('TRANSNATION') || repuesto.marca.toUpperCase().includes('TRANSNA')) {
+            imagenOverhaul = '<img src="img/overhaul_transnation.jpeg" alt="Kit Overhaul Transnation" class="repuesto-imagen" onerror="this.style.display=\'none\'" />';
+          }
+        }
+
         return `
           <div class="repuesto-item" onclick="contactarRepuesto('${repuesto.caja}', '${repuesto.descripcion}')">
+            ${imagenOverhaul}
             <div class="repuesto-codigo">${repuesto.descripcion}</div>
             <div class="repuesto-descripcion">🔧 Transmisión: ${repuesto.caja} | 🏷️ ${repuesto.marca}</div>
             <div class="repuesto-aplicacion">
