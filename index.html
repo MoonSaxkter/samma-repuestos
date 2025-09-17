@@ -559,29 +559,94 @@
       }
     }
 
-    /* Responsivo general */
+    /* Responsivo mejorado para Android */
     @media (max-width: 768px) {
+      * {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+      
+      body {
+        overflow-x: hidden;
+        width: 100vw;
+      }
+      
+      main {
+        padding: 0 15px;
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+      }
+      
+      .busqueda-inteligente {
+        padding: 20px 15px;
+        margin-bottom: 30px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      
+      .servicios-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        width: 100%;
+        padding: 0;
+      }
+
+      .grid-categorias {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        width: 100%;
+        padding: 0 10px;
+      }
+      
+      .categoria {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 25px 15px;
+        box-sizing: border-box;
+      }
+
+      .categorias-stock {
+        padding: 30px 15px;
+        margin: 40px 0;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      
+      .filtros-rapidos {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        max-width: 100%;
+        width: 100%;
+      }
+      
+      .filtros-rapidos select,
+      .filtros-rapidos input {
+        padding: 16px 22px;
+        font-size: 1rem;
+        min-height: 54px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      
+      .resultados-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+        width: 100%;
+      }
+      
       header h1 {
         font-size: 2.2rem;
       }
 
       h2 {
         font-size: 2rem;
-      }
-
-      .servicios-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-
-      .grid-categorias {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-      }
-
-      .categorias-stock {
-        padding: 40px 20px;
-        margin: 60px 0;
+        padding: 0 10px;
       }
     }
 
@@ -626,7 +691,7 @@
       <h2>🚘 Nuestros Servicios</h2>
       <div class="servicios-grid">
         <div class="servicio">
-          <span class="servicio-icono">🔧</span>
+          <img src="img/repuestos.png" alt="Repuestos de Transmisión" class="servicio-imagen" onerror="this.style.display='none'" />
           <h3>Repuestos de Transmisiones</h3>
           <p>Amplio catálogo de repuestos originales y compatibles para todo tipo de transmisiones automáticas.</p>
         </div>
@@ -852,13 +917,15 @@
           colorStock = '#51cf66';
         }
 
-        // Agregar imagen solo para overhaul PRECISION y TRANSNATION
+        // Agregar imagen solo para overhaul PRECISION, TRANSNATION y TRANSTEC
         let imagenOverhaul = '';
         if (repuesto.categoria === 'overhaul') {
           if (repuesto.marca.toUpperCase().includes('PRECISION')) {
             imagenOverhaul = '<img src="img/overhaul.jpeg" alt="Kit Overhaul Precision" class="repuesto-imagen" onerror="this.style.display=\'none\'" />';
           } else if (repuesto.marca.toUpperCase().includes('TRANSNATION') || repuesto.marca.toUpperCase().includes('TRANSNA')) {
             imagenOverhaul = '<img src="img/overhaul_transnation.jpeg" alt="Kit Overhaul Transnation" class="repuesto-imagen" onerror="this.style.display=\'none\'" />';
+          } else if (repuesto.marca.toUpperCase().includes('TRANSTEC')) {
+            imagenOverhaul = '<img src="img/overhaul_transtec.jpeg" alt="Kit Overhaul Transtec" class="repuesto-imagen" onerror="this.style.display=\'none\'" />';
           }
         }
 
