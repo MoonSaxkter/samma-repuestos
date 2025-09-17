@@ -25,9 +25,17 @@
       backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(142, 45, 226, 0.2);
       padding: 20px 0;
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 1000;
+      width: 100%;
+    }
+
+    /* Compensar el espacio del header fijo */
+    body {
+      padding-top: 120px;
     }
 
     .header-content {
@@ -496,6 +504,10 @@
 
     /* Responsive */
     @media (max-width: 768px) {
+      body {
+        padding-top: 140px;
+      }
+      
       .header-content {
         flex-direction: column;
         gap: 20px;
