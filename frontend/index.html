@@ -157,6 +157,22 @@
       display: block;
     }
 
+    .servicio-imagen {
+      width: 100%;
+      max-width: 200px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .servicio-imagen:hover {
+      border-color: #ff0080;
+      transform: scale(1.05);
+    }
+
     .servicio h3 {
       font-size: 1.4rem;
       margin-bottom: 15px;
@@ -591,6 +607,7 @@
       <h2>🚘 Nuestros Servicios</h2>
       <div class="servicios-grid">
         <div class="servicio">
+          <img src="img/overhaul.jpeg" alt="Kit Overhaul" class="servicio-imagen" onerror="this.style.display='none'" />
           <span class="servicio-icono">🔧</span>
           <h3>Repuestos de Transmisiones</h3>
           <p>Amplio catálogo de repuestos originales y compatibles para todo tipo de transmisiones automáticas.</p>
@@ -616,7 +633,7 @@
         <input type="text" id="busqueda-general" placeholder="🔍 Buscar por código, marca, modelo..." onkeyup="buscarRepuestos()" />
         
         <div class="filtros-rapidos">
-          <input type="text" id="filtro-caja" placeholder="📦 Número de caja (ej: 4L60E)" onkeyup="aplicarFiltros()" />
+          <input type="text" id="filtro-caja" placeholder="📦 Número de transmisión (ej: 4L60E)" onkeyup="aplicarFiltros()" />
 
           <select id="filtro-tipo" onchange="aplicarFiltros()">
             <option value="">⚙️ Todos los repuestos</option>
@@ -670,17 +687,70 @@
   </footer>
 
   <script>
-    // Base de datos simulada de repuestos (aquí tu madre agregaría todos sus repuestos)
-    const repuestosDB = [
-      // Ejemplos de cómo estructurar los repuestos con número de caja
-      { codigo: "EMP-001", descripcion: "Empaque de tapa de válvulas", caja: "4L60E", tipo: "empaques", año: "2015-2020", aplicacion: "Honda Civic, Accord" },
-      { codigo: "EMP-002", descripcion: "Empaque de carter", caja: "CVT", tipo: "empaques", año: "2018-2023", aplicacion: "Toyota Corolla" },
-      { codigo: "FIL-012", descripcion: "Filtro de transmisión CVT", caja: "CVT", tipo: "filtros", año: "2016-2021", aplicacion: "Nissan Sentra, Versa" },
-      { codigo: "DIS-008", descripcion: "Disco de fricción banda A", caja: "4T65E", tipo: "discos", año: "2014-2019", aplicacion: "Ford Focus, Fiesta" },
-      { codigo: "BAN-015", descripcion: "Banda de freno trasera", caja: "6T40", tipo: "bandas", año: "2017-2022", aplicacion: "Chevrolet Cruze" },
-      { codigo: "PST-003", descripcion: "Pistón de servo principal", caja: "A6LF1", tipo: "pistones", año: "2019-2024", aplicacion: "Hyundai Elantra" },
-      // Aquí irían TODOS los repuestos reales...
-    ];
+    // URLs de los CSV de Google Sheets (inventario real de Samma Transmissions)
+    const csvUrls = {
+      overhaul: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7FLxUuVFwrR4P6U8o-VzWdAkIWkJdXfRQGMj09I_rzF_9PfLB5XKu0SoztZt_hs7bhWwRXa_OcqMU/pub?gid=1425967188&single=true&output=csv',
+      discos: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7FLxUuVFwrR4P6U8o-VzWdAkIWkJdXfRQGMj09I_rzF_9PfLB5XKu0SoztZt_hs7bhWwRXa_OcqMU/pub?gid=579217340&single=true&output=csv',
+      bandas: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7FLxUuVFwrR4P6U8o-VzWdAkIWkJdXfRQGMj09I_rzF_9PfLB5XKu0SoztZt_hs7bhWwRXa_OcqMU/pub?gid=813615277&single=true&output=csv',
+      filtros: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7FLxUuVFwrR4P6U8o-VzWdAkIWkJdXfRQGMj09I_rzF_9PfLB5XKu0SoztZt_hs7bhWwRXa_OcqMU/pub?gid=237072059&single=true&output=csv',
+      pistones: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7FLxUuVFwrR4P6U8o-VzWdAkIWkJdXfRQGMj09I_rzF_9PfLB5XKu0SoztZt_hs7bhWwRXa_OcqMU/pub?gid=1404535140&single=true&output=csv',
+      retenedores: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7FLxUuVFwrR4P6U8o-VzWdAkIWkJdXfRQGMj09I_rzF_9PfLB5XKu0SoztZt_hs7bhWwRXa_OcqMU/pub?gid=622344143&single=true&output=csv',
+      bushing: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7FLxUuVFwrR4P6U8o-VzWdAkIWkJdXfRQGMj09I_rzF_9PfLB5XKu0SoztZt_hs7bhWwRXa_OcqMU/pub?gid=346334362&single=true&output=csv',
+      empaques: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7FLxUuVFwrR4P6U8o-VzWdAkIWkJdXfRQGMj09I_rzF_9PfLB5XKu0SoztZt_hs7bhWwRXa_OcqMU/pub?gid=989228475&single=true&output=csv',
+      discos_sueltos: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7FLxUuVFwrR4P6U8o-VzWdAkIWkJdXfRQGMj09I_rzF_9PfLB5XKu0SoztZt_hs7bhWwRXa_OcqMU/pub?gid=659494719&single=true&output=csv',
+      metales: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7FLxUuVFwrR4P6U8o-VzWdAkIWkJdXfRQGMj09I_rzF_9PfLB5XKu0SoztZt_hs7bhWwRXa_OcqMU/pub?gid=1217743284&single=true&output=csv',
+      varios: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7FLxUuVFwrR4P6U8o-VzWdAkIWkJdXfRQGMj09I_rzF_9PfLB5XKu0SoztZt_hs7bhWwRXa_OcqMU/pub?gid=1070226293&single=true&output=csv'
+    };
+
+    // Base de datos global del inventario
+    let inventarioCompleto = [];
+    let cargandoDatos = false;
+
+    // Cargar datos del inventario desde Google Sheets
+    async function cargarInventario() {
+      if (cargandoDatos) return;
+      cargandoDatos = true;
+      
+      console.log('Cargando inventario completo desde Google Sheets...');
+      inventarioCompleto = [];
+      
+      for (const [categoria, url] of Object.entries(csvUrls)) {
+        try {
+          // Usar un proxy CORS para acceder a Google Sheets
+          const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+          const response = await fetch(proxyUrl);
+          const csvText = await response.text();
+          
+          // Parsear CSV
+          const lines = csvText.split('\n');
+          const headers = lines[0].split(',');
+          
+          for (let i = 1; i < lines.length; i++) {
+            const values = lines[i].split(',');
+            if (values.length >= 4 && values[0]) {
+              const producto = {
+                categoria: categoria,
+                caja: values[0]?.trim() || '',
+                marca: values[1]?.trim() || '',
+                cantidad: parseInt(values[2]) || 0,
+                codigo: values[3]?.trim() || '',
+                precio: parseFloat(values[4]?.replace(/[^\d.]/g, '')) || 0,
+                descripcion: `${values[0]} ${values[1]}`.trim(),
+                disponible: parseInt(values[2]) > 0
+              };
+              inventarioCompleto.push(producto);
+            }
+          }
+          
+          console.log(`✅ ${categoria}: Productos cargados`);
+        } catch (error) {
+          console.log(`❌ Error cargando ${categoria}:`, error.message);
+        }
+      }
+      
+      console.log(`🎉 Inventario completo cargado: ${inventarioCompleto.length} productos`);
+      cargandoDatos = false;
+    }
 
     // Función de búsqueda inteligente
     function buscarRepuestos() {
@@ -691,10 +761,11 @@
         document.getElementById('resultados-detallados').style.display = 'block';
         document.getElementById('lista-categorias').style.display = 'none';
         
-        const resultados = repuestosDB.filter(repuesto => 
+        const resultados = inventarioCompleto.filter(repuesto => 
           repuesto.codigo.toLowerCase().includes(termino) ||
           repuesto.descripcion.toLowerCase().includes(termino) ||
-          repuesto.aplicacion.toLowerCase().includes(termino)
+          repuesto.caja.toLowerCase().includes(termino) ||
+          repuesto.marca.toLowerCase().includes(termino)
         );
         
         mostrarResultados(resultados);
@@ -713,18 +784,18 @@
       const anio = document.getElementById('filtro-anio').value;
       const termino = document.getElementById('busqueda-general').value.toLowerCase();
 
-      let resultados = repuestosDB;
+      let resultados = inventarioCompleto;
 
       // Aplicar filtros
       if (caja) resultados = resultados.filter(r => r.caja.toLowerCase().includes(caja));
-      if (tipo) resultados = resultados.filter(r => r.tipo === tipo);
-      if (anio) resultados = resultados.filter(r => r.año.includes(anio));
+      if (tipo) resultados = resultados.filter(r => r.categoria === tipo);
+      if (anio) resultados = resultados.filter(r => r.descripcion.includes(anio));
       if (termino.length > 2) {
         resultados = resultados.filter(r => 
           r.codigo.toLowerCase().includes(termino) ||
           r.descripcion.toLowerCase().includes(termino) ||
-          r.aplicacion.toLowerCase().includes(termino) ||
-          r.caja.toLowerCase().includes(termino)
+          r.caja.toLowerCase().includes(termino) ||
+          r.marca.toLowerCase().includes(termino)
         );
       }
 
@@ -750,13 +821,30 @@
         return;
       }
 
-      container.innerHTML = resultados.map(repuesto => `
-        <div class="repuesto-item" onclick="contactarRepuesto('${repuesto.codigo}')">
-          <div class="repuesto-codigo">${repuesto.codigo}</div>
-          <div class="repuesto-descripcion">${repuesto.descripcion}</div>
-          <div class="repuesto-aplicacion">📦 Caja: ${repuesto.caja} | 🚗 ${repuesto.aplicacion} (${repuesto.año})</div>
-        </div>
-      `).join('');
+      container.innerHTML = resultados.map(repuesto => {
+        // Determinar estado de disponibilidad
+        let estadoStock = '';
+        let colorStock = '';
+        
+        if (repuesto.cantidad === 0) {
+          estadoStock = '❌ No disponible';
+          colorStock = '#ff6b6b';
+        } else if (repuesto.cantidad > 0) {
+          estadoStock = '✅ Disponible';
+          colorStock = '#51cf66';
+        }
+
+        return `
+          <div class="repuesto-item" onclick="contactarRepuesto('${repuesto.caja}', '${repuesto.descripcion}')">
+            <div class="repuesto-codigo">${repuesto.descripcion}</div>
+            <div class="repuesto-descripcion">🔧 Transmisión: ${repuesto.caja} | 🏷️ ${repuesto.marca}</div>
+            <div class="repuesto-aplicacion">
+              <span style="color: ${colorStock}; font-weight: bold;">${estadoStock}</span>
+              ${repuesto.categoria ? ' | 📂 ' + repuesto.categoria.charAt(0).toUpperCase() + repuesto.categoria.slice(1) : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     // Filtro rápido por categoría
@@ -788,14 +876,23 @@
     }
 
     // Función para contactar sobre un repuesto específico
-    function contactarRepuesto(codigo) {
-      // Aquí puedes integrar WhatsApp, formulario, etc.
-      alert(`¡Perfecto! Te contactaremos sobre el repuesto ${codigo}. 
+    function contactarRepuesto(caja, descripcion) {
+      // Crear mensaje de WhatsApp automático
+      const mensaje = `Hola, me interesa consultar sobre un repuesto:
       
-En el futuro aquí podrías:
-📱 Enviar WhatsApp automático
-📧 Abrir formulario de contacto  
-🛒 Agregar al carrito`);
+🔧 Producto: ${descripcion}
+📦 Número de transmisión: ${caja}
+
+¿Podrían darme información sobre precio y disponibilidad?
+
+Gracias!`;
+      
+      const numeroWhatsApp = "50670048"; // Aquí va el número de WhatsApp de tu madre
+      const mensajeCodificado = encodeURIComponent(mensaje);
+      const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
+      
+      // Abrir WhatsApp
+      window.open(urlWhatsApp, '_blank');
     }
 
     // Función original de filtrar categorías (para búsquedas simples)
@@ -859,10 +956,20 @@ En el futuro aquí podrías:
       });
     }
 
-    // Inicializar efectos al cargar la página
+    // Inicializar la página cuando se carga
     document.addEventListener('DOMContentLoaded', function() {
       createParticles();
       addCategoryClickEffects();
+      
+      // Cargar inventario real desde Google Sheets
+      cargarInventario();
+      
+      // Mensaje inicial mientras carga
+      setTimeout(() => {
+        if (inventarioCompleto.length === 0) {
+          console.log('📡 Conectando con inventario de Samma Transmissions...');
+        }
+      }, 2000);
     });
 
     // Agregar animación de fade in
