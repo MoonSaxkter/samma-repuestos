@@ -31,6 +31,12 @@
       right: 0;
       z-index: 1000;
       width: 100%;
+      transform: translateY(0);
+      transition: transform 0.3s ease;
+    }
+
+    header.hidden {
+      transform: translateY(-100%);
     }
 
     /* Compensar el espacio del header fijo */
@@ -907,6 +913,24 @@ Gracias!`;
     // Inicializar
     document.addEventListener('DOMContentLoaded', function() {
       cargarInventario();
+      
+      // Header auto-hide en scroll
+      let lastScrollTop = 0;
+      const header = document.querySelector('header');
+      
+      window.addEventListener('scroll', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+          // Scroll hacia abajo - ocultar header
+          header.classList.add('hidden');
+        } else {
+          // Scroll hacia arriba - mostrar header
+          header.classList.remove('hidden');
+        }
+        
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+      });
     });
   </script>
 </body>
